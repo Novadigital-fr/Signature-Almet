@@ -1,51 +1,395 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Prévisualisation - Signatures ALMET</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Générateur de signature email — Groupe ALMET</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 30px; margin: 0; }
-  h1 { color: #1e3a8a; }
-  h2 { color: #1e3a8a; margin-top: 40px; border-bottom: 2px solid #1e3a8a; padding-bottom: 6px; }
-  .preview { background: #fff; padding: 24px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 30px; max-width: 820px; }
-  .info { background: #fffbe6; border-left: 4px solid #f1c40f; padding: 12px 16px; margin-bottom: 20px; max-width: 820px; border-radius: 4px; font-size: 14px; }
-  code { background: #eee; padding: 2px 6px; border-radius: 3px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f4f6fa;
+    color: #1f2937;
+    line-height: 1.5;
+  }
+  header {
+    background: linear-gradient(135deg, #2a52b8 0%, #63d4f7 100%);
+    color: white;
+    padding: 24px 32px;
+  }
+  header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header p { margin: 4px 0 0; opacity: 0.9; font-size: 14px; }
+
+  main {
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .panel h2 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2a52b8;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  label:first-of-type { margin-top: 0; }
+
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #63d4f7;
+    box-shadow: 0 0 0 3px rgba(99, 212, 247, 0.2);
+  }
+
+  .preview-container {
+    min-height: 200px;
+    padding: 24px;
+    background: white;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  button.primary {
+    background: #2a52b8;
+    color: white;
+  }
+  button.primary:hover { background: #1e3d8f; }
+  button.secondary {
+    background: #f3f4f6;
+    color: #374151;
+  }
+  button.secondary:hover { background: #e5e7eb; }
+  button.success {
+    background: #10b981;
+    color: white;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .hint code {
+    background: #f3f4f6;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
 </style>
 </head>
 <body>
 
-<h1>Signatures email ALMET — Prévisualisation</h1>
+<header>
+  <h1>Générateur de signature email</h1>
+  <p>Groupe ALMET — remplissez le formulaire et copiez votre signature</p>
+</header>
 
-<div class="info">
-  <strong>4 déclinaisons disponibles :</strong> ALMET (base), ALU3P, LE METAL SERVICES, ALMET MARINE.<br>
-  Les logos affichés sont des <strong>placeholders</strong>, à remplacer par les vrais visuels une fois hébergés.<br>
-  Chaque champ entre <code>{{ }}</code> est à personnaliser par chaque salarié.
-</div>
+<main>
+  <section class="panel">
+    <h2>Vos informations</h2>
 
-<h2>1. ALMET (signature de base)</h2>
-<div class="preview" id="p1"></div>
+    <label for="societe">Société</label>
+    <select id="societe">
+      <option value="almet">ALMET</option>
+      <option value="alu3p">ALU3P</option>
+      <option value="almetmarine">ALMET MARINE</option>
+      <option value="lemetalservices">ALMET + LE MÉTAL SERVICES</option>
+    </select>
 
-<h2>2. ALMET + ALU3P</h2>
-<div class="preview" id="p2"></div>
+    <label for="prenom">Prénom</label>
+    <input type="text" id="prenom" placeholder="Stéphanie" value="Stéphanie" />
 
-<h2>3. ALMET + LE METAL SERVICES</h2>
-<div class="preview" id="p3"></div>
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" placeholder="NALLET" value="NALLET" />
 
-<h2>4. ALMET + ALMET MARINE</h2>
-<div class="preview" id="p4"></div>
+    <label for="fonction">Fonction</label>
+    <input type="text" id="fonction" placeholder="Assistante de direction" value="Assistante de direction" />
+
+    <label for="telephone">Téléphone</label>
+    <input type="text" id="telephone" placeholder="+33 4 74 95 81 82" value="+33 4 74 95 81 82" />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="prenom.nom@almet-metal.com" value="stephanie.nallet@almet-metal.com" />
+  </section>
+
+  <section class="panel">
+    <h2>Aperçu de votre signature</h2>
+    <div class="preview-container" id="preview"></div>
+
+    <div class="actions">
+      <button class="primary" id="copyBtn">Copier la signature</button>
+      <button class="secondary" id="copyHtmlBtn">Copier le code HTML</button>
+    </div>
+
+    <p class="hint">
+      <strong>Pour Outlook :</strong> cliquez sur « Copier la signature », puis dans Outlook ouvrez
+      <code>Fichier → Options → Courrier → Signatures</code>, créez une nouvelle signature et collez (Ctrl+V).<br />
+      <strong>Pour Gmail :</strong> Paramètres → Voir tous les paramètres → onglet Général → Signature → collez dans l'éditeur.
+    </p>
+  </section>
+</main>
 
 <script>
-  const files = [
-    ['p1', 'signature-almet.htm'],
-    ['p2', 'signature-alu3p.htm'],
-    ['p3', 'signature-lemetalservices.htm'],
-    ['p4', 'signature-almetmarine.htm'],
-  ];
-  files.forEach(([id, file]) => {
-    fetch(file).then(r => r.text()).then(html => {
-      document.getElementById(id).innerHTML = html;
-    });
-  });
+const BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
+
+const COMPANIES = {
+  almet: {
+    name: 'ALMET',
+    logo: 'https://i0.wp.com/almet-metal.com/wp-content/uploads/2020/02/cropped-logo-nude.jpg?w=428&ssl=1',
+    logoExtra: null,
+    website: 'https://almet-metal.com',
+    linkedin: 'https://www.linkedin.com/company/almet-france/',
+    bannerUrl: BASE_URL + 'banniere-almet.png',
+  },
+  alu3p: {
+    name: 'ALU3P',
+    logo: 'https://i0.wp.com/alu3p.com/wp-content/uploads/2020/05/cropped-logoAlu3P.png?fit=166%2C46&ssl=1',
+    logoExtra: null,
+    website: 'https://alu3p.com',
+    linkedin: 'https://www.linkedin.com/company/almet-france/',
+    bannerUrl: BASE_URL + 'banniere-almet.png',
+  },
+  almetmarine: {
+    name: 'ALMET MARINE',
+    logo: 'https://i0.wp.com/almet-marine.com/wp-content/uploads/2020/01/cropped-logo-sansbandeau-3.jpg?w=848&ssl=1',
+    logoExtra: null,
+    website: 'https://almet-marine.com',
+    linkedin: 'https://www.linkedin.com/company/almet-france/',
+    bannerUrl: BASE_URL + 'banniere-almet.png',
+  },
+  lemetalservices: {
+    name: 'ALMET + LE MÉTAL SERVICES',
+    logo: 'https://i0.wp.com/almet-metal.com/wp-content/uploads/2020/02/cropped-logo-nude.jpg?w=428&ssl=1',
+    logoExtra: 'https://placehold.co/160x40/ffffff/2e7d32/png?text=LE+METAL+SERVICES',
+    website: 'https://almet-metal.com',
+    linkedin: 'https://www.linkedin.com/company/almet-france/',
+    bannerUrl: BASE_URL + 'banniere-almet.png',
+  },
+};
+
+const ADDRESS = '16, rue des Combes &ndash; 38290 Satolas-et-Bonce';
+
+const DOMAINS = {
+  almet: 'almet-metal.com',
+  alu3p: 'alu3p.com',
+  almetmarine: 'almet-marine.com',
+  lemetalservices: 'almet-metal.com',
+};
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function buildSignature(data) {
+  const c = COMPANIES[data.societe];
+  const fullName = `${escapeHtml(data.prenom)} ${escapeHtml(data.nom)}`;
+
+  const logoBlock = c.logoExtra
+    ? `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 8px auto;height:auto;" />
+       <img src="${c.logoExtra}" width="160" height="40" alt="LE METAL SERVICES" style="display:block;border:0;margin:0 auto 12px auto;" />`
+    : `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />`;
+
+  return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;line-height:1.4;">
+  <tr>
+    <td valign="top" style="padding:0 20px 0 0;width:180px;text-align:center;">
+      ${logoBlock}
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
+        <tr>
+          <td style="padding:0 6px;">
+            <a href="${c.website}" style="text-decoration:none;">
+              <table cellpadding="0" cellspacing="0" border="0"><tr>
+                <td width="40" height="40" align="center" valign="middle" bgcolor="#63d4f7" style="background-color:#63d4f7;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
+                  <img src="https://img.icons8.com/ios-filled/100/ffffff/domain.png" width="22" height="22" alt="Site web" style="display:inline-block;border:0;vertical-align:middle;" />
+                </td>
+              </tr></table>
+            </a>
+          </td>
+          <td style="padding:0 6px;">
+            <a href="${c.linkedin}" style="text-decoration:none;">
+              <table cellpadding="0" cellspacing="0" border="0"><tr>
+                <td width="40" height="40" align="center" valign="middle" bgcolor="#63d4f7" style="background-color:#63d4f7;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
+                  <img src="https://img.icons8.com/ios-filled/100/ffffff/linkedin-2.png" width="22" height="22" alt="LinkedIn" style="display:inline-block;border:0;vertical-align:middle;" />
+                </td>
+              </tr></table>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+
+    <td valign="top" style="width:2px;background-color:#63d4f7;padding:0;font-size:0;line-height:0;">&nbsp;</td>
+
+    <td valign="top" style="padding:0 0 0 20px;">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:bold;color:#2a52b8;padding-bottom:2px;">
+            ${fullName}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#2a52b8;padding-bottom:10px;">
+            ${escapeHtml(data.fonction)}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#333333;padding-bottom:6px;">
+            ${escapeHtml(data.telephone)}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;padding-bottom:6px;">
+            <a href="mailto:${escapeHtml(data.email)}" style="color:#333333;text-decoration:underline;">${escapeHtml(data.email)}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">
+            ${ADDRESS}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3" style="padding-top:14px;">
+      <a href="${c.website}" style="text-decoration:none;">
+        <img src="${c.bannerUrl}" width="600" alt="L'expertise du métal — la proximité et le service en plus" style="display:block;border:0;max-width:100%;height:auto;" />
+      </a>
+    </td>
+  </tr>
+</table>`;
+}
+
+function getFormData() {
+  return {
+    societe: document.getElementById('societe').value,
+    prenom: document.getElementById('prenom').value,
+    nom: document.getElementById('nom').value,
+    fonction: document.getElementById('fonction').value,
+    telephone: document.getElementById('telephone').value,
+    email: document.getElementById('email').value,
+  };
+}
+
+function updatePreview() {
+  document.getElementById('preview').innerHTML = buildSignature(getFormData());
+}
+
+async function copyRichSignature() {
+  const html = buildSignature(getFormData());
+  const text = document.getElementById('preview').innerText;
+  try {
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([text], { type: 'text/plain' }),
+      }),
+    ]);
+    flashButton('copyBtn', '✓ Signature copiée !');
+  } catch (e) {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('preview'));
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    document.execCommand('copy');
+    sel.removeAllRanges();
+    flashButton('copyBtn', '✓ Signature copiée !');
+  }
+}
+
+async function copyHtmlSource() {
+  const html = buildSignature(getFormData());
+  try {
+    await navigator.clipboard.writeText(html);
+    flashButton('copyHtmlBtn', '✓ Code HTML copié !');
+  } catch (e) {
+    alert('Impossible de copier — votre navigateur ne supporte pas la copie automatique.');
+  }
+}
+
+function flashButton(id, message) {
+  const btn = document.getElementById(id);
+  const original = btn.textContent;
+  const originalClass = btn.className;
+  btn.textContent = message;
+  btn.className = 'success';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.className = originalClass;
+  }, 2000);
+}
+
+document.querySelectorAll('input, select').forEach((el) => {
+  el.addEventListener('input', updatePreview);
+});
+document.getElementById('copyBtn').addEventListener('click', copyRichSignature);
+document.getElementById('copyHtmlBtn').addEventListener('click', copyHtmlSource);
+
+document.getElementById('societe').addEventListener('change', (e) => {
+  const emailInput = document.getElementById('email');
+  const current = emailInput.value;
+  const atIndex = current.indexOf('@');
+  if (atIndex > -1) {
+    emailInput.value = current.substring(0, atIndex + 1) + DOMAINS[e.target.value];
+    updatePreview();
+  }
+});
+
+updatePreview();
 </script>
 
 </body>
