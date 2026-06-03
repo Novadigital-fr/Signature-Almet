@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Prévisualisation - Signatures ALMET</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 30px; margin: 0; }
+  h1 { color: #1e3a8a; }
+  h2 { color: #1e3a8a; margin-top: 40px; border-bottom: 2px solid #1e3a8a; padding-bottom: 6px; }
+  .preview { background: #fff; padding: 24px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 30px; max-width: 820px; }
+  .info { background: #fffbe6; border-left: 4px solid #f1c40f; padding: 12px 16px; margin-bottom: 20px; max-width: 820px; border-radius: 4px; font-size: 14px; }
+  code { background: #eee; padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>Signatures email ALMET — Prévisualisation</h1>
+
+<div class="info">
+  <strong>4 déclinaisons disponibles :</strong> ALMET (base), ALU3P, LE METAL SERVICES, ALMET MARINE.<br>
+  Les logos affichés sont des <strong>placeholders</strong>, à remplacer par les vrais visuels une fois hébergés.<br>
+  Chaque champ entre <code>{{ }}</code> est à personnaliser par chaque salarié.
+</div>
+
+<h2>1. ALMET (signature de base)</h2>
+<div class="preview" id="p1"></div>
+
+<h2>2. ALMET + ALU3P</h2>
+<div class="preview" id="p2"></div>
+
+<h2>3. ALMET + LE METAL SERVICES</h2>
+<div class="preview" id="p3"></div>
+
+<h2>4. ALMET + ALMET MARINE</h2>
+<div class="preview" id="p4"></div>
+
+<script>
+  const files = [
+    ['p1', 'signature-almet.htm'],
+    ['p2', 'signature-alu3p.htm'],
+    ['p3', 'signature-lemetalservices.htm'],
+    ['p4', 'signature-almetmarine.htm'],
+  ];
+  files.forEach(([id, file]) => {
+    fetch(file).then(r => r.text()).then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+  });
+</script>
+
+</body>
+</html>
