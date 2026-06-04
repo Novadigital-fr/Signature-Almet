@@ -14,7 +14,7 @@
     line-height: 1.5;
   }
   header {
-    background: linear-gradient(135deg, #2a52b8 0%, #63d4f7 100%);
+    background: linear-gradient(135deg, #2a52b8 0%, #74BBF0 100%);
     color: white;
     padding: 24px 32px;
   }
@@ -67,8 +67,8 @@
   }
   input:focus, select:focus {
     outline: none;
-    border-color: #63d4f7;
-    box-shadow: 0 0 0 3px rgba(99, 212, 247, 0.2);
+    border-color: #74BBF0;
+    box-shadow: 0 0 0 3px rgba(116, 187, 240, 0.2);
   }
 
   .preview-container {
@@ -141,7 +141,7 @@
       <option value="almet">ALMET</option>
       <option value="alu3p">ALU3P</option>
       <option value="almetmarine">ALMET MARINE</option>
-      <option value="lemetalservices">ALMET + LE MÉTAL SERVICES</option>
+      <option value="lemetalservices">LE MÉTAL SERVICES</option>
     </select>
 
     <label for="prenom">Prénom</label>
@@ -180,42 +180,46 @@
 <script>
 const BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
 
+const BANNER = BASE_URL + encodeURIComponent('ALMET_Bandeau Signature Mail.png');
+
 const COMPANIES = {
   almet: {
     name: 'ALMET',
-    logo: 'https://i0.wp.com/almet-metal.com/wp-content/uploads/2020/02/cropped-logo-nude.jpg?w=428&ssl=1',
+    logo: BASE_URL + 'ALMET.png',
     logoExtra: null,
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
-    bannerUrl: BASE_URL + 'banniere-almet.png',
+    bannerUrl: BANNER,
+    address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
   },
   alu3p: {
     name: 'ALU3P',
-    logo: 'https://i0.wp.com/alu3p.com/wp-content/uploads/2020/05/cropped-logoAlu3P.png?fit=166%2C46&ssl=1',
+    logo: BASE_URL + encodeURIComponent('ALU 3P.png'),
     logoExtra: null,
     website: 'https://alu3p.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
-    bannerUrl: BASE_URL + 'banniere-almet.png',
+    bannerUrl: BANNER,
+    address: '8 Route de Longes &ndash; 42800 Rive-de-Gier',
   },
   almetmarine: {
     name: 'ALMET MARINE',
-    logo: 'https://i0.wp.com/almet-marine.com/wp-content/uploads/2020/01/cropped-logo-sansbandeau-3.jpg?w=848&ssl=1',
+    logo: BASE_URL + encodeURIComponent('ALMET MARINE.png'),
     logoExtra: null,
     website: 'https://almet-marine.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
-    bannerUrl: BASE_URL + 'banniere-almet.png',
+    bannerUrl: BANNER,
+    address: '6 Rue de la Métallurgie &ndash; 44470 Carquefou',
   },
   lemetalservices: {
-    name: 'ALMET + LE MÉTAL SERVICES',
-    logo: 'https://i0.wp.com/almet-metal.com/wp-content/uploads/2020/02/cropped-logo-nude.jpg?w=428&ssl=1',
-    logoExtra: 'https://placehold.co/160x40/ffffff/2e7d32/png?text=LE+METAL+SERVICES',
+    name: 'LE MÉTAL SERVICES',
+    logo: BASE_URL + 'LMS.png',
+    logoExtra: null,
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
-    bannerUrl: BASE_URL + 'banniere-almet.png',
+    bannerUrl: BANNER,
+    address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
   },
 };
-
-const ADDRESS = '16, rue des Combes &ndash; 38290 Satolas-et-Bonce';
 
 const DOMAINS = {
   almet: 'almet-metal.com',
@@ -239,7 +243,7 @@ function buildSignature(data) {
 
   const logoBlock = c.logoExtra
     ? `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 8px auto;height:auto;" />
-       <img src="${c.logoExtra}" width="160" height="40" alt="LE METAL SERVICES" style="display:block;border:0;margin:0 auto 12px auto;" />`
+       <img src="${c.logoExtra}" width="160" alt="LE METAL SERVICES" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />`
     : `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />`;
 
   return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;line-height:1.4;">
@@ -251,7 +255,7 @@ function buildSignature(data) {
           <td style="padding:0 6px;">
             <a href="${c.website}" style="text-decoration:none;">
               <table cellpadding="0" cellspacing="0" border="0"><tr>
-                <td width="40" height="40" align="center" valign="middle" bgcolor="#63d4f7" style="background-color:#63d4f7;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
+                <td width="40" height="40" align="center" valign="middle" bgcolor="#74BBF0" style="background-color:#74BBF0;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
                   <img src="https://img.icons8.com/ios-filled/100/ffffff/domain.png" width="22" height="22" alt="Site web" style="display:inline-block;border:0;vertical-align:middle;" />
                 </td>
               </tr></table>
@@ -260,7 +264,7 @@ function buildSignature(data) {
           <td style="padding:0 6px;">
             <a href="${c.linkedin}" style="text-decoration:none;">
               <table cellpadding="0" cellspacing="0" border="0"><tr>
-                <td width="40" height="40" align="center" valign="middle" bgcolor="#63d4f7" style="background-color:#63d4f7;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
+                <td width="40" height="40" align="center" valign="middle" bgcolor="#74BBF0" style="background-color:#74BBF0;border-radius:20px;width:40px;height:40px;text-align:center;vertical-align:middle;line-height:40px;mso-line-height-rule:exactly;">
                   <img src="https://img.icons8.com/ios-filled/100/ffffff/linkedin-2.png" width="22" height="22" alt="LinkedIn" style="display:inline-block;border:0;vertical-align:middle;" />
                 </td>
               </tr></table>
@@ -270,7 +274,7 @@ function buildSignature(data) {
       </table>
     </td>
 
-    <td valign="top" style="width:2px;background-color:#63d4f7;padding:0;font-size:0;line-height:0;">&nbsp;</td>
+    <td valign="top" style="width:2px;background-color:#74BBF0;padding:0;font-size:0;line-height:0;">&nbsp;</td>
 
     <td valign="top" style="padding:0 0 0 20px;">
       <table cellpadding="0" cellspacing="0" border="0">
@@ -296,7 +300,7 @@ function buildSignature(data) {
         </tr>
         <tr>
           <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">
-            ${ADDRESS}
+            ${c.address}
           </td>
         </tr>
       </table>
