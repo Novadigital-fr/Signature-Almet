@@ -156,6 +156,9 @@
     <label for="telephone">Téléphone</label>
     <input type="text" id="telephone" placeholder="+33 4 74 95 81 82" value="+33 4 74 95 81 82" />
 
+    <label for="mobile">Mobile <span style="color:#9ca3af;font-weight:400;">(optionnel)</span></label>
+    <input type="text" id="mobile" placeholder="+33 6 12 34 56 78" value="" />
+
     <label for="email">Email</label>
     <input type="email" id="email" placeholder="prenom.nom@almet-metal.com" value="stephanie.nallet@almet-metal.com" />
   </section>
@@ -180,46 +183,44 @@
 <script>
 const BASE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
 
-const BANNER = BASE_URL + encodeURIComponent('ALMET_Bandeau Signature Mail.png');
+const BANNER = BASE_URL + 'bandeau.png';
 
 const COMPANIES = {
   almet: {
     name: 'ALMET',
-    logo: BASE_URL + 'ALMET.png',
-    logoExtra: null,
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
     address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
+    brandLogo: null,
   },
   alu3p: {
     name: 'ALU3P',
-    logo: BASE_URL + encodeURIComponent('ALU 3P.png'),
-    logoExtra: null,
     website: 'https://alu3p.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
     address: '8 Route de Longes &ndash; 42800 Rive-de-Gier',
+    brandLogo: BASE_URL + 'ALU3P-h.png',
   },
   almetmarine: {
     name: 'ALMET MARINE',
-    logo: BASE_URL + encodeURIComponent('ALMET MARINE.png'),
-    logoExtra: null,
     website: 'https://almet-marine.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
     address: '6 Rue de la Métallurgie &ndash; 44470 Carquefou',
+    brandLogo: BASE_URL + 'ALMET-MARINE-h.png',
   },
   lemetalservices: {
     name: 'LE MÉTAL SERVICES',
-    logo: BASE_URL + 'LMS.png',
-    logoExtra: null,
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
     address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
+    brandLogo: BASE_URL + 'LMS-h.png',
   },
 };
+
+const ALMET_LOGO = BASE_URL + 'ALMET.png';
 
 const DOMAINS = {
   almet: 'almet-metal.com',
@@ -241,15 +242,22 @@ function buildSignature(data) {
   const c = COMPANIES[data.societe];
   const fullName = `${escapeHtml(data.prenom)} ${escapeHtml(data.nom)}`;
 
-  const logoBlock = c.logoExtra
-    ? `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 8px auto;height:auto;" />
-       <img src="${c.logoExtra}" width="160" alt="LE METAL SERVICES" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />`
-    : `<img src="${c.logo}" width="160" alt="${escapeHtml(c.name)}" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />`;
+  const phoneLine = data.mobile && data.mobile.trim()
+    ? `${escapeHtml(data.telephone)} <span style="color:#74BBF0;font-weight:normal;">&nbsp;·&nbsp;</span> ${escapeHtml(data.mobile)}`
+    : escapeHtml(data.telephone);
+
+  const brandLogoRow = c.brandLogo
+    ? `<tr>
+          <td style="padding-top:12px;">
+            <img src="${c.brandLogo}" alt="${escapeHtml(c.name)}" style="display:block;border:0;max-height:40px;width:auto;" />
+          </td>
+        </tr>`
+    : '';
 
   return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;line-height:1.4;">
   <tr>
-    <td valign="top" style="padding:0 20px 0 0;width:180px;text-align:center;">
-      ${logoBlock}
+    <td valign="middle" align="center" style="padding:0 20px 0 0;width:180px;text-align:center;vertical-align:middle;">
+      <img src="${ALMET_LOGO}" width="160" alt="ALMET" style="display:block;border:0;margin:0 auto 12px auto;height:auto;" />
       <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
         <tr>
           <td style="padding:0 6px;">
@@ -290,7 +298,7 @@ function buildSignature(data) {
         </tr>
         <tr>
           <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:bold;color:#333333;padding-bottom:6px;">
-            ${escapeHtml(data.telephone)}
+            ${phoneLine}
           </td>
         </tr>
         <tr>
@@ -303,6 +311,7 @@ function buildSignature(data) {
             ${c.address}
           </td>
         </tr>
+        ${brandLogoRow}
       </table>
     </td>
   </tr>
@@ -310,7 +319,7 @@ function buildSignature(data) {
   <tr>
     <td colspan="3" style="padding-top:14px;">
       <a href="${c.website}" style="text-decoration:none;">
-        <img src="${c.bannerUrl}" width="600" alt="L'expertise du métal — la proximité et le service en plus" style="display:block;border:0;max-width:100%;height:auto;" />
+        <img src="${c.bannerUrl}" width="500" alt="L'expertise du métal — la proximité et le service en plus" style="display:block;border:0;max-width:100%;height:auto;" />
       </a>
     </td>
   </tr>
@@ -324,6 +333,7 @@ function getFormData() {
     nom: document.getElementById('nom').value,
     fonction: document.getElementById('fonction').value,
     telephone: document.getElementById('telephone').value,
+    mobile: document.getElementById('mobile').value,
     email: document.getElementById('email').value,
   };
 }
