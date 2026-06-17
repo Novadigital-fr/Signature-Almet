@@ -162,6 +162,12 @@
 
     <label for="email">Email</label>
     <input type="email" id="email" placeholder="prenom.nom@almet-metal.com" value="stephanie.nallet@almet-metal.com" />
+
+    <label for="adresse1">Adresse — ligne 1</label>
+    <input type="text" id="adresse1" placeholder="16, rue des Combes – CS 40470 Satolas et Bonce" value="16, rue des Combes – CS 40470 Satolas et Bonce" />
+
+    <label for="adresse2">Adresse — ligne 2</label>
+    <input type="text" id="adresse2" placeholder="38297 SAINT QUENTIN FALLAVIER" value="38297 SAINT QUENTIN FALLAVIER" />
   </section>
 
   <section class="panel">
@@ -192,7 +198,8 @@ const COMPANIES = {
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
-    address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
+    addressLine1: '16, rue des Combes – CS 40470 Satolas et Bonce',
+    addressLine2: '38297 SAINT QUENTIN FALLAVIER',
     brandLogo: null,
   },
   alu3p: {
@@ -200,7 +207,8 @@ const COMPANIES = {
     website: 'https://alu3p.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
-    address: '8 Route de Longes &ndash; 42800 Rive-de-Gier',
+    addressLine1: '8 Route de Longes',
+    addressLine2: '42800 Rive-de-Gier',
     brandLogo: BASE_URL + 'ALU3P-h.png',
   },
   almetmarine: {
@@ -208,7 +216,8 @@ const COMPANIES = {
     website: 'https://almet-marine.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
-    address: '6 Rue de la Métallurgie &ndash; 44470 Carquefou',
+    addressLine1: '6 Rue de la Métallurgie',
+    addressLine2: '44470 Carquefou',
     brandLogo: BASE_URL + 'ALMET-MARINE-h.png',
   },
   lemetalservices: {
@@ -216,7 +225,8 @@ const COMPANIES = {
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
-    address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
+    addressLine1: '16, rue des Combes – CS 40470 Satolas et Bonce',
+    addressLine2: '38297 SAINT QUENTIN FALLAVIER',
     brandLogo: BASE_URL + 'LMS-h.png',
   },
   metalcentre: {
@@ -224,7 +234,8 @@ const COMPANIES = {
     website: 'https://almet-metal.com',
     linkedin: 'https://www.linkedin.com/company/almet-france/',
     bannerUrl: BANNER,
-    address: '16, rue des Combes &ndash; 38290 Satolas-et-Bonce',
+    addressLine1: '16, rue des Combes – CS 40470 Satolas et Bonce',
+    addressLine2: '38297 SAINT QUENTIN FALLAVIER',
     brandLogo: BASE_URL + 'Lemetalcentre.png',
   },
 };
@@ -317,8 +328,8 @@ function buildSignature(data) {
           </td>
         </tr>
         <tr>
-          <td style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">
-            ${c.address}
+          <td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#333333;line-height:1.4;">
+            ${escapeHtml(data.adresse1)}<br />${escapeHtml(data.adresse2)}
           </td>
         </tr>
         ${brandLogoRow}
@@ -345,6 +356,8 @@ function getFormData() {
     telephone: document.getElementById('telephone').value,
     mobile: document.getElementById('mobile').value,
     email: document.getElementById('email').value,
+    adresse1: document.getElementById('adresse1').value,
+    adresse2: document.getElementById('adresse2').value,
   };
 }
 
@@ -404,13 +417,16 @@ document.getElementById('copyBtn').addEventListener('click', copyRichSignature);
 document.getElementById('copyHtmlBtn').addEventListener('click', copyHtmlSource);
 
 document.getElementById('societe').addEventListener('change', (e) => {
+  const key = e.target.value;
   const emailInput = document.getElementById('email');
   const current = emailInput.value;
   const atIndex = current.indexOf('@');
   if (atIndex > -1) {
-    emailInput.value = current.substring(0, atIndex + 1) + DOMAINS[e.target.value];
-    updatePreview();
+    emailInput.value = current.substring(0, atIndex + 1) + DOMAINS[key];
   }
+  document.getElementById('adresse1').value = COMPANIES[key].addressLine1;
+  document.getElementById('adresse2').value = COMPANIES[key].addressLine2;
+  updatePreview();
 });
 
 updatePreview();
